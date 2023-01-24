@@ -1,26 +1,25 @@
 package Hotel;
 
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import net.proteanit.sql.*;
 
-public class Room extends JFrame implements ActionListener {
+public class UpdateDriver extends JFrame implements ActionListener {
+    JButton submit,back,searchButton;
+    JTextField searchField;
+    JCheckBox availableCars;
     JTable table;
 
-    JButton searchButton,back,submit;
-
-    JTextField searchField;
-    JCheckBox availableRooms;
-
-    public Room(){
+    public UpdateDriver(){
         setVisible(true);
         getContentPane().setBackground(Color.WHITE);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/eight.jpg"));
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/eleven.jpg"));
         Image i2 = i1.getImage().getScaledInstance(600,600,Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JLabel image = new JLabel(i3);
@@ -31,16 +30,16 @@ public class Room extends JFrame implements ActionListener {
         Search.setBounds(10,10,100,20);
         add(Search);
 
-        availableRooms = new JCheckBox("Show available rooms");
-        availableRooms.setBounds(20,35,160,25);
-        availableRooms.setBackground(Color.WHITE);
-        add(availableRooms);
+        availableCars = new JCheckBox("Show available cars");
+        availableCars.setBounds(20,35,160,25);
+        availableCars.setBackground(Color.WHITE);
+        add(availableCars);
 
         searchField = new JTextField("");
         searchField.setBounds(70, 10, 150, 20);
         add(searchField);
 
-        searchButton = new JButton("Search Room");
+        searchButton = new JButton("Search Cars");
         searchButton.setBounds(240,10,120,20);
         searchButton.setForeground(Color.WHITE);
         searchButton.setBackground(Color.BLACK);
@@ -61,7 +60,7 @@ public class Room extends JFrame implements ActionListener {
         back.addActionListener(this);
         add(back);
 
-        JLabel rNumber = new JLabel("Room Number");
+        JLabel rNumber = new JLabel("Nume");
         rNumber.setBounds(10,60,100,20);
         add(rNumber);
 
@@ -69,11 +68,11 @@ public class Room extends JFrame implements ActionListener {
         rAvailability.setBounds(120,60,100,20);
         add(rAvailability);
 
-        JLabel Status = new JLabel("Status");
+        JLabel Status = new JLabel("Gender");
         Status.setBounds(230,60,100,20);
         add(Status);
 
-        JLabel rPrice = new JLabel("Price");
+        JLabel rPrice = new JLabel("Brand");
         rPrice.setBounds(330,60,100,20);
         add(rPrice);
 
@@ -82,7 +81,7 @@ public class Room extends JFrame implements ActionListener {
         add(table);
         try{
             Conn c = new Conn();
-            ResultSet rs  = c.s.executeQuery("select * from room order by room_number asc");
+            ResultSet rs  = c.s.executeQuery("select * from driver order by name asc");
             table.setModel(DbUtils.resultSetToTableModel(rs));
         }catch(Exception e){
             e.printStackTrace();
@@ -96,27 +95,23 @@ public class Room extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent ae){
         if(ae.getSource() == searchButton){
-            String roomNumber = searchField.getText();
+            String driverName = searchField.getText();
             try{
                 Conn c = new Conn();
 
-                if(!roomNumber.isEmpty() ) {
-                    ResultSet rs = c.s.executeQuery("select * from room where room_number like " + roomNumber);
+                if(!driverName.isEmpty() ) {
+                    ResultSet rs = c.s.executeQuery("select * from driver where name='" +driverName+ "'");
 
                     //JOptionPane.showMessageDialog(null,"You arrived here");
 
                     table.setModel(DbUtils.resultSetToTableModel(rs));
-                }else if(roomNumber.isEmpty()){
-                    ResultSet rs = c.s.executeQuery("select * from room");
+                }else if(driverName.isEmpty()){
+                    ResultSet rs = c.s.executeQuery("select * from driver");
                     //JOptionPane.showMessageDialog(null,"You arrived here 2");
                     table.setModel(DbUtils.resultSetToTableModel(rs));}
-//                else if(){
-//
-//                    table.setModel(DbUtils.resultSetToTableModel(rs));
-//                }
 
                 else{
-                    JOptionPane.showMessageDialog(null,"Room doesn't exists or is an invalid number");
+                    JOptionPane.showMessageDialog(null,"Driver doesn't exists or is an invalid name");
                 }
             }catch(Exception e){
                 e.printStackTrace();
@@ -124,11 +119,11 @@ public class Room extends JFrame implements ActionListener {
         }else if(ae.getSource() == submit){
             try{
                 Conn c = new Conn();
-                if(availableRooms.isSelected()) {
-                    ResultSet rs = c.s.executeQuery("select * from room where availability='Available'");
+                if(availableCars.isSelected()) {
+                    ResultSet rs = c.s.executeQuery("select * from driver where availability='Available'");
                     table.setModel(DbUtils.resultSetToTableModel(rs));
-                }else if(!availableRooms.isSelected()){
-                    ResultSet rs2 = c.s.executeQuery("select * from room");
+                }else if(!availableCars.isSelected()){
+                    ResultSet rs2 = c.s.executeQuery("select * from driver");
                     table.setModel(DbUtils.resultSetToTableModel(rs2));
                 }
             }catch(Exception e){
@@ -141,7 +136,6 @@ public class Room extends JFrame implements ActionListener {
         }
     }
     public static void main(String[] args){
-        new Room();
+        new UpdateDriver();
     }
-
 }

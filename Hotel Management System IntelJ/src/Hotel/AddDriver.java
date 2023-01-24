@@ -45,7 +45,7 @@ public class AddDriver extends JFrame implements ActionListener {
         dgenderlb.setBounds(60,180,120,30);
         add(dgenderlb);
 
-        String dgender[] = {"Male", "Female(no)"};
+        String dgender[] = {"Male", "Female"};
         dgendercombo = new JComboBox(dgender);
         dgendercombo.setBounds(200,180,150,30);
         dgendercombo.setBackground(Color.WHITE);
@@ -125,7 +125,7 @@ public class AddDriver extends JFrame implements ActionListener {
 
             try{
                 Conn conn = new Conn();
-                String query = "insert into drivers values('"+driverName+"', '"+driverAge+"', '"+available+"', '"+driverGender+"', '"+carBrand+"')";
+                String query = "insert into driver values('"+driverName+"', '"+driverAge+"', '"+available+"', '"+driverGender+"', '"+carBrand+"')";
                 conn.s.executeUpdate(query);
 
                 JOptionPane.showMessageDialog(null,"New Driver Added Successfully");

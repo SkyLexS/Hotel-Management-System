@@ -127,12 +127,18 @@ public class AddEmployee extends JFrame implements ActionListener {
         String gender = null;
         String regex4Email = "^(.+)@(.+)$";
         String regex4Phone = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$";
+        String regex4Name = "[A-Za-z]+\s[A-Za-z]+";
+        String regex4Salary = "[0-9]+$";
+        Pattern pattern4Salary = Pattern.compile(regex4Salary);
+        Pattern pattern4Name = Pattern.compile(regex4Name);
         Pattern pattern4Email = Pattern.compile(regex4Email);
         Pattern pattern4Phone = Pattern.compile(regex4Phone);
+        Matcher matcher4salary = pattern4Salary.matcher(salary);
+        Matcher matcher4Name = pattern4Name.matcher(name);
         Matcher matcher4Email = pattern4Email.matcher(email);
         Matcher matcher4Phone = pattern4Phone.matcher(phone);
 
-        if(name.equals("") || name.length()>20){
+        if(name.equals("") || name.length()>20 || !matcher4Name.matches()){
             JOptionPane.showMessageDialog(null,"Name is empty or your name is more than 20 characters");
             return;
         }
@@ -141,7 +147,7 @@ public class AddEmployee extends JFrame implements ActionListener {
             return;
         }
 
-        if(salary.equals("") || salary.length() > 5){
+        if(salary.equals("") || salary.length() > 5 || !matcher4salary.matches()){
             JOptionPane.showMessageDialog(null,"Salary is empty or it is an invalid number");
             return;
         }
